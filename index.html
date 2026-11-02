@@ -1,74 +1,197 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Toalhas de Mesa</title>
-    <style>
-        :root {
-            --bg: #121214;
-            --card-bg: #1e1e24;
-            --text: #ffffff;
-            --accent: #25d366;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Toalhas de Mesa</title>
+  <style>
+    :root {
+      --bg: #121214;
+      --card-bg: #1e1e24;
+      --text: #ffffff;
+      --accent: #25d366;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .header h1 { margin-bottom: 5px; }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    .btn-pdf { background: #e74c3c; color: white; }
+    .btn-wsp { background: #25d366; color: white; }
+    
+    .color-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .color-strip {
+      height: 52px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .color-strip:hover {
+      transform: scale(1.01);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #aaa;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            margin-bottom: 5px;
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
-            background-color: var(--accent);
-            color: var(--bg);
-        }
-    </style>
+    /* Impressão PDF */
+    @media print {
+      body { background: white; color: black; padding: 0; }
+      .btn-group, .no-print, .header p { display: none !important; }
+      .color-strip { border: 1px solid #ddd; box-shadow: none; margin-bottom: 2px; }
+    }
+  </style>
 </head>
 <body>
 
-    <header class="header">
-        <h1>Catálogo de Toalhas de Mesa</h1>
-        <p>Escolha o modelo ideal para a sua casa</p>
-        
-        <div class="btn-group">
-            <a href="#" class="btn">Ver Modelos</a>
-            <a href="#" class="btn">Fale Conosco</a>
-        </div>
-    </header>
+  <div class="header">
+    <h1>Toalhas de Mesa</h1>
+    <p>Selecione a cor para consultar disponibilidade</p>
+    
+    <div class="btn-group">
+      <button onclick="window.print()" class="btn btn-pdf">
+        📄 Salvar / Imprimir PDF
+      </button>
 
+      <a href="https://wa.me/5527988862107?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20um%20or%C3%A7amento%20de%20aluguel%20de%20toalhas%20de%20mesa." 
+         target="_blank" 
+         class="btn btn-wsp">
+        💬 Falar com Atendente
+      </a>
+    </div>
+  </div>
+
+  <div class="color-grid" id="catalog"></div>
+
+  <!-- Modal de Detalhes -->
+  <div id="modal" class="modal" onclick="fecharModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close-btn" onclick="fecharModal()">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p id="modal-desc" style="color: #ccc; margin-bottom: 20px;"></p>
+      <a id="modal-wsp" href="" target="_blank" class="btn btn-wsp" style="width: 100%; justify-content: center;">
+        💬 Solicitar Orçamento no WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const TELEFONE = "5527988862107";
+
+    const cores = [
+      { nome: "Branca", hex: "#FFFFFF", darkText: true, ind: "Formaturas, Batizados, Eventos Clássicos" },
+      { nome: "Off-White / Palha", hex: "#F5F5DC", darkText: true, ind: "Casamentos Rústicos, Bodas, Aniversários Adultos" },
+      { theme: "Preta", hex: "#000000", darkText: false, ind: "Festas de 15 Anos, Baladas, Eventos Noturnos" },
+      { nome: "Cinza Prata", hex: "#C0C0C0", darkText: true, ind: "Eventos Modernos, Aniversários Corporativos" },
+      { nome: "Azul Bebê", hex: "#87CEEB", darkText: true, ind: "Chá de Bebê, Batizados, Temas Infantis" },
+      { nome: "Azul Royal", hex: "#4169E1", darkText: false, ind: "Super-Heróis, Patrulha Canina, Galinha Pintadinha" },
+      { nome: "Azul Marinho", hex: "#000080", darkText: false, ind: "Bodas, Eventos Masculinos, 15 Anos" },
+      { nome: "Turquesa", hex: "#00CED1", darkText: false, ind: "Festas Tropicais, Sereia, Fundo do Mar" },
+      { nome: "Rosa Bebê", hex: "#FFB6C1", darkText: true, ind: "Chá de Bebê, 1 Aninho, Festas Delicadas" },
+      { nome: "Rosa Chiclete", hex: "#FF1493", darkText: false, ind: "Barbie, Festas Infantis Femininas, Teens" },
+      { nome: "Rosa Pink", hex: "#E0115F", darkText: false, ind: "15 Anos, Festas Temáticas" },
+      { nome: "Lilás", hex: "#E6E6FA", darkText: true, ind: "Jardim Encantado, Princesas, Chá de Revelação" },
+      { nome: "Roxa", hex: "#800080", darkText: false, ind: "Halloween, Eventos Teens, Festas Noturnas" },
+      { nome: "Vinho / Marsala", hex: "#722F37", darkText: false, ind: "Bodas de Vinho, Aniversários Adultos, Jantares" },
+      { nome: "Vermelha", hex: "#FF0000", darkText: false, ind: "Mickey, Homem-Aranha, Natal, Festas Juninas" },
+      { nome: "Laranja", hex: "#FFA500", darkText: true, ind: "Tropical, Churrascos, Aniversários Diurnos" },
+      { nome: "Amarela", hex: "#FFD700", darkText: true, ind: "Girassol, Minions, Festas Infantis" },
+      { nome: "Verde Bebê", hex: "#98FB98", darkText: true, ind: "Maternidade, Bosque Encantado" },
+      { nome: "Verde Bandeira", hex: "#008000", darkText: false, ind: "Futebol, Dinossauros, Natureza" },
+      { nome: "Verde Oliva", hex: "#556B2F", darkText: false, ind: "Estilo Rústico, Eventos Adultos" }
+    ];
+
+    const catalog = document.getElementById("catalog");
+
+    cores.forEach(c => {
+      const nomeCor = c.nome || c.theme;
+      const div = document.createElement("div");
+      div.className = "color-strip";
+      div.style.background = c.hex;
+      div.style.color = c.darkText ? "#000" : "#FFF";
+      div.innerHTML = `<span>${nomeCor}</span><span>➔</span>`;
+      div.onclick = () => abrirModal(nomeCor, c.ind);
+      catalog.appendChild(div);
+    });
+
+    function abrirModal(nome, indicacao) {
+      document.getElementById("modal-title").innerText = nome;
+      document.getElementById("modal-desc").innerText = "Indicado para: " + indicacao;
+      
+      const msg = encodeURIComponent(`Olá! Gostaria de verificar a disponibilidade da toalha na cor: *${nome}*.`);
+      document.getElementById("modal-wsp").href = `https://wa.me/${TELEFONE}?text=${msg}`;
+      
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function fecharModal(e) {
+      document.getElementById("modal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
+
+
