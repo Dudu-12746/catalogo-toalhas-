@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aluguel de Mesas e Toalhas</title>
+  <!-- Conecta o arquivo CSS externo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Monte seu Orçamento</h1>
+      <p>Escolha os jogos de mesa, as toalhas e informe o local!</p>
+    </div>
+
+    <!-- 1. SELEÇÃO DE MESAS -->
+    <div class="card-section">
+      <h2>1. Jogos de Mesa (Mesa + 4 Cadeiras)</h2>
+      <div class="qty-control">
+        <span>Quantidade de jogos:</span>
+        <div>
+          <button class="qty-btn" id="btn-menos">-</button>
+          <span class="qty-display" id="qtd-mesas">0</span>
+          <button class="qty-btn" id="btn-mais">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SELEÇÃO DE COR DAS TOALHAS -->
+    <div class="card-section">
+      <h2>2. Selecione a Cor da Toalha</h2>
+      <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 12px;">Clique na cor desejada:</p>
+      <div class="color-grid" id="catalog"></div>
+    </div>
+
+    <!-- 3. ENDEREÇO DE ENTREGA -->
+    <div class="card-section">
+      <h2>3. Endereço de Entrega</h2>
+      <div class="input-group">
+        <label for="endereco">Rua, Número e Bairro do evento:</label>
+        <input type="text" id="endereco" placeholder="Ex: Rua das Flores, 123 - Centro">
+      </div>
+    </div>
+
+    <!-- BOTÃO FINAL -->
+    <button class="btn-wsp" id="btn-enviar">
+      💬 Enviar Pedido no WhatsApp
+    </button>
+  </div>
+
+  <!-- Conecta o arquivo JavaScript externo -->
+  <script src="script.js"></script>
+</body>
+</html>

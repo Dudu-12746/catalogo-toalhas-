@@ -1,0 +1,150 @@
+:root {
+  --bg: #121214;
+  --card-bg: #1e1e24;
+  --text: #ffffff;
+  --accent: #25d366;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card-section {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.card-section h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
+/* Contador de Mesas */
+.qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.qty-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #333;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.qty-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Inputs de formulário */
+.input-group {
+  margin-top: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #121214;
+  color: white;
+  font-size: 1rem;
+}
+
+/* Lista de Cores Acessível */
+.color-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.color-strip {
+  height: 48px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: #2a2a32;
+}
+
+.color-strip.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(37, 211, 102, 0.5);
+}
+
+.color-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Quadrado da Paleta que renderiza a cor */
+.color-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.color-name {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Botão de WhatsApp com contraste corrigido */
+.btn-wsp {
+  width: 100%;
+  padding: 15px;
+  background: var(--accent);
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
